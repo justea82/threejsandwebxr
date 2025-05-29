@@ -37,21 +37,40 @@
 // Load model
 		let mixer;
 		const loader = new FBXLoader();
+		//loader.load(
+		//	'Capoeira.fbx',
+		//	function (gltf) {
+		//		const model = gltf.scene;
+		//		scene.add(model);
+		//		if (gltf.animations.length > 0) {
+		//			mixer = new THREE.AnimationMixer(model);
+		//			gltf.animations.forEach(clip => {
+		//				mixer.clipAction(clip).play();
+		//			});
+		//		}
+		//	},
+		//	undefined,
+		//	function (error) {
+		//		console.error('Error loading GLB:', error);
+		//	}
+		//	);
+
 		loader.load(
 			'Capoeira.fbx',
-			function (gltf) {
-				const model = gltf.scene;
-				scene.add(model);
-				if (gltf.animations.length > 0) {
-					mixer = new THREE.AnimationMixer(model);
-					gltf.animations.forEach(clip => {
+			function (object) {
+				scene.add(object);
+
+// FBX files can contain animations, accessed via object.animations
+				if (object.animations && object.animations.length > 0) {
+					mixer = new THREE.AnimationMixer(object);
+					object.animations.forEach(clip => {
 						mixer.clipAction(clip).play();
 					});
 				}
 			},
 			undefined,
 			function (error) {
-				console.error('Error loading GLB:', error);
+				console.error('Error loading FBX:', error);
 			}
 			);
 // Animation loop
